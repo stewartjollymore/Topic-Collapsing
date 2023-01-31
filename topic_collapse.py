@@ -1,8 +1,15 @@
 from sklearn.metrics.pairwise import cosine_similarity
 
+# Create similarity matrix from a c-tf-idf matrix
 similarities_test = cosine_similarity(tf_idf.T)
+
+# create zeros on the diag where similarity of a topic
+# with itself is 1.  This is an artifact and not necssary
+# when using the triu_indices function from numpy
 np.fill_diagonal(similarities_test, 0)
 
+# Creates a vector from upper triangular matirx of
+# the similarity matrix
 sims_test = similarities_test[np.triu_indices(80, k = 1)]
 docs_df_test = docs_df
 
@@ -16,6 +23,8 @@ iqr = q3-q1
 # finding upper and lower whiskers
 upper_bound = q3+(2*iqr)
 
+# Initializes the number of current similarity outliers above 
+# the upper whisker
 number_of_outliers = len(np.where(sims_test > upper_bound)[0])
 
 
